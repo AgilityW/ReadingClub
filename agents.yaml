@@ -1,0 +1,212 @@
+version: "1.0.0"
+name: "读书会 Agent Group"
+description: "多元知识背景的读书与话题讨论智能体群组"
+
+# ============================================================
+# 核心 Agent（固定，不可删减）
+# 新增 Agent 参考 .agents/_template/ 目录
+# ============================================================
+
+protected_agents:
+  - host
+  - philosopher
+  - economist
+  - psychologist
+  - historian
+  - sociologist
+  - technologist
+  - literarian
+  - futurist
+  - scientist
+  - writer
+  - reviewer
+
+agents:
+
+  # ── 主持 ──────────────────────────────────────────────────
+  host:
+    id: host
+    name: "主理人"
+    emoji: "🎙️"
+    protected: true
+    role: orchestrator
+    files:
+      soul: .agents/host/soul.md
+      profile: .agents/host/profile.md
+      user: .agents/host/user.md
+
+  # ── 读者群 ────────────────────────────────────────────────
+  philosopher:
+    id: philosopher
+    name: "哲学家"
+    emoji: "🧠"
+    protected: true
+    role: reader
+    perspective: "本体/伦理/认识论"
+    files:
+      soul: .agents/philosopher/soul.md
+      profile: .agents/philosopher/profile.md
+      user: .agents/philosopher/user.md
+
+  economist:
+    id: economist
+    name: "经济学家"
+    emoji: "📊"
+    protected: true
+    role: reader
+    perspective: "激励/结构/博弈"
+    files:
+      soul: .agents/economist/soul.md
+      profile: .agents/economist/profile.md
+      user: .agents/economist/user.md
+
+  psychologist:
+    id: psychologist
+    name: "心理学家"
+    emoji: "🔬"
+    protected: true
+    role: reader
+    perspective: "行为/认知/动机"
+    files:
+      soul: .agents/psychologist/soul.md
+      profile: .agents/psychologist/profile.md
+      user: .agents/psychologist/user.md
+
+  historian:
+    id: historian
+    name: "历史学家"
+    emoji: "📜"
+    protected: true
+    role: reader
+    perspective: "脉络/类比/长周期"
+    files:
+      soul: .agents/historian/soul.md
+      profile: .agents/historian/profile.md
+      user: .agents/historian/user.md
+
+  sociologist:
+    id: sociologist
+    name: "社会学家"
+    emoji: "🌐"
+    protected: true
+    role: reader
+    perspective: "群体/权力/制度"
+    files:
+      soul: .agents/sociologist/soul.md
+      profile: .agents/sociologist/profile.md
+      user: .agents/sociologist/user.md
+
+  technologist:
+    id: technologist
+    name: "技术人"
+    emoji: "💻"
+    protected: true
+    role: reader
+    perspective: "系统/第一性原理/未来推演"
+    files:
+      soul: .agents/technologist/soul.md
+      profile: .agents/technologist/profile.md
+      user: .agents/technologist/user.md
+
+  literarian:
+    id: literarian
+    name: "文学家"
+    emoji: "📖"
+    protected: true
+    role: reader
+    perspective: "叙事/隐喻/情感/人文"
+    files:
+      soul: .agents/literarian/soul.md
+      profile: .agents/literarian/profile.md
+      user: .agents/literarian/user.md
+
+  futurist:
+    id: futurist
+    name: "未来学家"
+    emoji: "🔭"
+    protected: true
+    role: reader
+    perspective: "趋势/情景规划/长远推演"
+    files:
+      soul: .agents/futurist/soul.md
+      profile: .agents/futurist/profile.md
+      user: .agents/futurist/user.md
+
+  scientist:
+    id: scientist
+    name: "科学家"
+    emoji: "🧬"
+    protected: true
+    role: reader
+    perspective: "实证/机制/复杂性"
+    files:
+      soul: .agents/scientist/soul.md
+      profile: .agents/scientist/profile.md
+      user: .agents/scientist/user.md
+
+  # ── 产出 ──────────────────────────────────────────────────
+  writer:
+    id: writer
+    name: "Writer"
+    emoji: "✍️"
+    protected: true
+    role: producer
+    output_formats:
+      - essay      # 深度叙事长文
+      - report     # 结构化洞见报告
+    files:
+      soul: .agents/writer/soul.md
+      profile: .agents/writer/profile.md
+      user: .agents/writer/user.md
+
+  reviewer:
+    id: reviewer
+    name: "Reviewer"
+    emoji: "🔍"
+    protected: true
+    role: quality_gate
+    scoring_dimensions:
+      - insight_depth      # 洞见深度
+      - logic_coherence    # 逻辑严密
+      - perspective_blend  # 多元融合
+      - readability        # 可读性
+    files:
+      soul: .agents/reviewer/soul.md
+      profile: .agents/reviewer/profile.md
+      user: .agents/reviewer/user.md
+
+# ============================================================
+# 工作流
+# ============================================================
+
+workflows:
+  book-club:
+    name: "读书会"
+    file: .agents/workflows/book-club.md
+    trigger: "给定一本书"
+    phases: 6
+
+  topic-discussion:
+    name: "话题讨论"
+    file: .agents/workflows/topic-discussion.md
+    trigger: "给定一个话题"
+    phases: 6
+
+# ============================================================
+# 扩展指引
+# ============================================================
+
+roster:
+  file: .agents/roster.md
+  description: "主理人 Phase 0 参与确认时读取的成员花名册，新增 Agent 后同步更新"
+
+extension:
+  template: .agents/_template/
+  instructions: |
+    新增 Agent 步骤：
+    1. 复制 .agents/_template/ 目录，重命名为新 Agent ID
+    2. 修改三个文件（soul.md / profile.md / user.md）
+    3. 在 platforms/openclaw/agent-configs/ 新增 {id}.md（workspace + tools）
+    4. 在本文件 agents: 块下新增一条记录（protected: false）
+    5. 在 .agents/roster.md 末尾追加一行记录（序号顺延）
+    6. 重新运行 bash platforms/openclaw/setup.sh 完成注册

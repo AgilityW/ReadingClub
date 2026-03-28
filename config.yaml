@@ -1,0 +1,28 @@
+# ============================================================
+# 读书会 Agent Group — 用户配置文件
+# 修改这里来选择大模型和调整讨论行为
+# ============================================================
+
+# ── 模型配置 ──────────────────────────────────────────────────
+# 支持格式：anthropic/claude-xxx | openai/gpt-4o | google/gemini-xxx
+# Claude Code CLI 模式下此配置不生效（模型由 Claude Code 本身控制）
+models:
+  default:  anthropic/claude-sonnet-4-5   # 所有读者 Agent 的默认模型
+
+  # 按 Agent ID 单独覆盖（不填则使用 default）
+  host:     anthropic/claude-opus-4-5
+  writer:   anthropic/claude-opus-4-5
+  reviewer: anthropic/claude-opus-4-5
+  # philosopher: openai/gpt-4o
+  # scientist:   google/gemini-2.0-flash
+  # economist:   anthropic/claude-haiku-3-5
+
+# ── 讨论设置 ──────────────────────────────────────────────────
+discussion:
+  rounds: 2        # 对话轮数（1-4）；Claude Code 本地模式建议用 1
+
+# ── 输出设置 ──────────────────────────────────────────────────
+output:
+  format: both           # essay（叙事长文）/ report（结构化报告）/ both
+  length: medium         # short（800-1200字）/ medium（1500-2500字）/ long（3000字以上）
+  style: 知识分子通俗     # 严肃学术 / 知识分子通俗 / 大众易读
